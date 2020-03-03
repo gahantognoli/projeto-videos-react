@@ -1,26 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import VideoList from './components/VideoList';
+import VideoPlayer from './components/VideoPlayer';
+import VideoCinema from './components/VideoCinema';
+import { VideoService } from './services/VideoService';
+
+class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      videos: [],
+      selectedVideo: {}
+    };
+
+    this.selectVideo = this.selectVideo.bind(this);
+
+  }
+
+  async componentDidMount(){
+    const videos = await VideoService.list();
+    this.setState({videos});
+
+    this.selectVideo(videos[0]);
+  }
+
+  selectVideo(video) {
+    this.setState({
+      selectedVideo: video
+    });
+  }
+
+  render() {
+    const { state } = this;
+
+    return (
+      <div className="App">
+        <VideoPlayer video={state.selectedVideo} />
+        <VideoList videos={state.videos} />
+        <VideoCinema isActive={false} />
+      </div>
+    );
+  }
 }
 
 export default App;
