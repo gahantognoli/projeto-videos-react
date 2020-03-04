@@ -5,7 +5,9 @@ function VideoCinema(props) {
         display: (props.isActive ? 'inline-block' : 'none')
     }
     return (
-        <div className="video-cinema" style={style}></div>
+        <div className="video-cinema" style={style}>
+            { props.clidren }
+        </div>
     );
 }
 
